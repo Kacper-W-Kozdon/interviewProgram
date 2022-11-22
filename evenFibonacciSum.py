@@ -11,7 +11,22 @@ import time
 def initialize():
     return []
 
-def storage(m = 0, tab = initialize()):
+def storage(m = 0, tab = initialize()):  
+    '''
+
+    Parameters
+    ----------
+    m : int, optional
+        Index of the current element. The default is 0.
+    tab : list, optional
+        A list of all previous elements.. The default is initialize().
+
+    Returns
+    -------
+    list
+        Returns a list filled in with the Fibonacci sequence.
+
+    '''
     n = m
     if n == 0:
         return tab.append(1)
@@ -21,9 +36,28 @@ def storage(m = 0, tab = initialize()):
         tab.append(tab[n - 1] + tab[n - 2])
     return tab[n]
     
-def fib_fun(m = 0, nlimit = 20, floatLim = np.finfo(np.single).max):
+def fib_fun(m = 0, nlimit = 20, floatLim = np.finfo(np.single).max):  
+    '''
+
+    Parameters
+    ----------
+    m : int, optional
+        Index of the current element. The default is 0.
+    nlimit : TYPE, optional
+        If int, stops the sequence at the n-th element, 
+        else- breaks upon reaching the floatLim. The default is 20.
+    floatLim : float32, optional
+        By default maximum value of a signed single precision float (float32)
+        used in the numpy library.. The default is np.finfo(np.single).max.
+
+    Returns
+    -------
+    list
+        A list filled in with the Fibonacci sequence.
+
+    '''
     tab = initialize()
-    limit = lambda m: m < nlimit if type(nlimit) is int else True
+    limit = lambda m: m < nlimit if type(nlimit) is int else True  #
     while limit(m):
         storage(m, tab)
         if tab[m] > floatLim:
@@ -32,35 +66,74 @@ def fib_fun(m = 0, nlimit = 20, floatLim = np.finfo(np.single).max):
     return tab if type(nlimit) is int else tab[:-1]
         
 def is_even(tab):
+    '''
+
+    Parameters
+    ----------
+    tab : list
+        A list of Fibonacci numbers..
+
+    Returns
+    -------
+    numpy array.
+        Returns a numpy array of indices and values of even elements of 
+        the Fibonacci sequence.
+
+    '''
     tabEven = (np.array(tab) % 2 == 0).astype(int)
     valEven = tabEven * tab
     idxEven = np.where(valEven != 0)[0]
     idxAndVal = np.array([idxEven[:], np.array(tab)[idxEven]]).reshape((2, -1)).transpose()
     return(idxAndVal)
 
-def recursion_fib():
-    limit = 30
-    tab = initialize()
-    tab = np.array(fib_fun(nlimit = limit))
-    tab2 = np.array([[idx, tab[idx]] for (idx, tab[idx]) in enumerate(tab)])
-    idxAndVal = is_even(tab)
-    evenIdx = idxAndVal[:, 0]
-    preEvenIdx = np.array([evenIdx[:] - 2, evenIdx[:] - 1]).reshape((1, -1), order = "F").flatten().astype(int).tolist()
-    preEvenValue = np.array(tab[preEvenIdx])
-    preIdxAndVal = np.array([preEvenIdx, preEvenValue])
-    idxAndVal2 = np.concatenate((np.array([[0, 1], [1, 1]]), idxAndVal), axis = 0)
-    return(tab2)
-
 def rec_even_fib(fib = (1, 2), tab = initialize()):
+    '''
+
+    Parameters
+    ----------
+    fib : a tuple, optional
+        First pair consisting of the first even element and the preceeding 
+        element. The default is (1, 2).
+    tab : list, optional
+        A list of even Fibonacci numbers. The default is initialize().
+
+    Returns
+    -------
+    list
+        A list of even Fibonacci numbers.
+
+    '''
     (a, b) = (fib[0], fib[1])
     tab.append(b)
     rec_even_fib((a + 2 * b, 2 * a + 3 * b)) if b < np.finfo(np.single).max else 0
     return tab[:-1]
 
 def sum_if_even(tab):
+    '''
+
+    Parameters
+    ----------
+    tab : list
+        A list of all even Fibonacci numbers meeting the criteria.
+
+    Returns
+    -------
+    float32 (np.single)
+        A sum of all values within the provided list.
+
+    '''
     return np.sum(tab)
 
 def run():
+    '''
+
+    Returns
+    -------
+    sumFibEven : float32 (np.single)
+        A sum of all even Fibonacci numbers meeting the criteria. Brute force 
+        approach (each number checked individually).
+
+    '''
     limit = True
     tab = initialize()
     tab = fib_fun(nlimit = limit)
@@ -70,6 +143,15 @@ def run():
     return sumFibEven
 
 def run2():
+    '''
+
+    Returns
+    -------
+    sumEven : float32 (np.single)
+        A sum of all even Fibonacci numbers meeting the criteria. 
+        The smart approach.
+
+    '''
     tab = rec_even_fib()
     sumEven = sum_if_even(tab)
     return sumEven
