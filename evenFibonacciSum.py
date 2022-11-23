@@ -2,7 +2,7 @@
 """
 Created on Sun Nov 20 18:25:45 2022
 
-@author: xBubblex
+@author: Kacper Kozdon
 """
 
 import numpy as np
@@ -155,9 +155,6 @@ def run2():
     tab = rec_even_fib()
     sumEven = sum_if_even(tab)
     return sumEven
-
-def run3():
-    pass
 
 tab = fib_fun()
 t1 = time.time()
