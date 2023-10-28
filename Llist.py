@@ -19,15 +19,12 @@ class Llist():
         self.node = head
     
     def __iter__(self):
-        if not self.node == self.head:
-            self.node = self.head
-       
         return self
     
     def append_list(fun):
         def inner_append_list(self, value):
             if type(value) == list:
-                print("yes")
+                
                 value.reverse()
                 while(value[-1]):
                     value_to_append = value.pop()
@@ -35,6 +32,7 @@ class Llist():
                     try:
                         value[-1]
                     except:
+                        print("Index out of the list.")
                         break
             else:
                 fun(self, value)
@@ -44,8 +42,13 @@ class Llist():
     
     @append_list
     def append(self, value):
-        self.node.next = value
-        self.node = Node(value)
+        self.node.next = Node(value)
+        
+        self.node = self.node.next
+        
+        
+    def reset_head(self):
+        self.node = self.head
         
     def reverse(self):
         
@@ -65,9 +68,13 @@ class Llist():
          
         if self.node.next:
             self.node = self.node.next
-            print(self.node.value)
+            try:
+                print(self.node.value, self.node.next.value)
+            except:
+                pass
         else: 
             raise StopIteration
+            
         return self
     
 def main():
@@ -75,10 +82,13 @@ def main():
     llist = Llist(head)
     print(type(llist))
     llist.append([2, 3, 4])
-    iterllist = iter(llist)
-    print(next(iterllist))
-    print(next(iterllist))
-    print(next(iterllist))
+    llist.reset_head()
+    iterllist = iter(llist)   
+    print()
+    
+    next(iterllist)
+    next(iterllist)
+    next(iterllist)
     pass
 
 if __name__ == "__main__":
