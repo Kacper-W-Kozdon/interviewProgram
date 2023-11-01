@@ -23,19 +23,19 @@ def assert_is_set(fun):
 def helper_fun(lst, depth):
     global subset
     global lst_of_subsets
-    print(lst)
+    #print(lst)
     for idx, elem in enumerate(lst):
-        if depth > 0:
-            if len(subset) == depth:
-                subset[depth - 1] = elem
-            else:
-                subset += [elem]
+        if depth > 0:           
+            subset[depth] = elem           
             helper_fun(lst[idx + 1 : ], depth - 1)
-        else:
-            #print(subset + [elem])
-            lst_of_subsets += [subset + [elem]]
-    if depth == 0 and subset != []:
-        subset.pop(0)
+        elif depth == 0 and len(subset) > 0:
+            subset[depth] = elem
+            #print(subset)
+            lst_of_subsets += [subset.copy()]
+        elif len(subset) == 0:
+            lst_of_subsets += [[]]
+            break
+
         
     
         
@@ -51,14 +51,14 @@ def main(lst: list,/ ) -> list:
     helper_lst = lst
     
     for sequence_len in range(len(lst) + 1):
-        depth = sequence_len
-        print(depth)
-        subset = []
+        subset = [0 for i in range(sequence_len)]
+        depth = sequence_len - 1
+
         helper_lst = lst.copy()
         helper_fun(helper_lst, depth)
     pass
     print(lst_of_subsets)
 
 if __name__ == "__main__":
-    lst = [1, 2, 3, 4]
+    lst = [1, 2, 3, 4, 5]
     main(lst)
