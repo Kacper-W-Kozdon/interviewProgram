@@ -23,12 +23,14 @@ def assert_is_set(fun):
 def helper_fun(lst):
     global subset
     global lst_of_subsets
-    subset += ["end"] 
-    print(subset)
+    subset += ["end"]
+    subsetcopy = subset[ : ]
     for elem in lst:
-        subset[-1] = elem
-        lst_of_subsets += [subset]
-    print(lst_of_subsets)
+        #print(elem)
+        subsetcopy[-1] = elem
+        print(subsetcopy)
+        lst_of_subsets += [subsetcopy]
+    #print(lst_of_subsets)
 
 @assert_types
 @assert_is_set
@@ -39,9 +41,11 @@ def main(lst: list,/ ) -> list:
     helper_lst = lst
     
     for sequence_len in range(len(lst) + 1):
+        subset = []
         for depth in range(sequence_len):
-            helper_lst = lst[depth : ]
+            
             for idx in range(depth, len(lst) - sequence_len + depth):
+                helper_lst = lst[idx : ]
                 helper_fun(helper_lst)
     pass
 
