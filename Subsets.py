@@ -24,10 +24,11 @@ def helper_fun(lst):
     global subset
     global lst_of_subsets
     subset += ["end"] 
-    for idx in lst:
-        subset[-1] = lst[idx]
+    print(subset)
+    for elem in lst:
+        subset[-1] = elem
         lst_of_subsets += [subset]
-        
+    print(lst_of_subsets)
 
 @assert_types
 @assert_is_set
