@@ -22,11 +22,11 @@ def assert_is_set(fun):
 
 def helper_fun(lst):
     global subset
-    global list_of_subsets
+    global lst_of_subsets
     subset += ["end"] 
     for idx in lst:
         subset[-1] = lst[idx]
-        list_of_subsets += [subset]
+        lst_of_subsets += [subset]
         
 
 @assert_types
@@ -46,4 +46,4 @@ def main(lst: list,/ ) -> list:
 
 if __name__ == "__main__":
     lst = [1, 2, 3, 4]
-    main()
+    main(lst)
