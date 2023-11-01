@@ -84,8 +84,8 @@ def main():
     llist.append([2, 3, 4])
     llist.reset_head()
     iterllist = iter(llist)   
-    print()
     
+    print(iterllist.node.value, iterllist.node.next.value) 
     next(iterllist)
     next(iterllist)
     next(iterllist)
