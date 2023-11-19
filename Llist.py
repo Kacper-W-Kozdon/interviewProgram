@@ -50,6 +50,11 @@ class Llist():
     def reset_head(self):
         self.node = self.head
         
+    def reset_head_decorator(fun):
+        def reset_wrapper(self):
+            self.reset_head(self)
+        return reset_wrapper
+        
     def reverse(self):
         
         if not self.head:
@@ -63,6 +68,36 @@ class Llist():
             Node(pointer.value).next = aux
         
         return self
+    
+    @reset_head_decorator
+    def find_cycle(self):
+        slow_pointer = self.head
+        fast_pointer = self.head
+        cycle = False
+        while fast_pointer.next != None and not cycle:
+            pass
+            slow_pointer = slow_pointer.next
+            fast_pointer = fast_pointer.next.next
+            if slow_pointer.value == fast_pointer.value:
+                cycle = True
+        print("Cycle: ", cycle)
+        return slow_pointer, fast_pointer if cycle else cycle
+        
+    def find_cycle_decorator(fun):
+        def find_cycle_wrapper(self):
+            pointers = self.find_cycle
+            return self.fun(*pointers) if pointers != False else "There is no cycle."
+        return find_cycle_wrapper
+    
+    @find_cycle_decorator
+    def find_cycle_length(self, slow_pointer, fast_pointer):
+        cycle_length = 0
+        fast_pointer = fast_pointer.next
+        while fast_pointer != slow_pointer:
+            cycle_length += 1
+            fast_pointer = fast_pointer.next
+        print("Cycle length is: ", cycle_length)
+        return cycle_length
     
     def __next__(self):
          
