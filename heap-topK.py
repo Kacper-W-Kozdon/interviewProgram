@@ -20,16 +20,54 @@ def find_top_K(lst, K):
     
     lst_len = len(lst)
     min_heap = []
-    heapq.heapify(lst)
+    lst_copy = lst.copy()
+
+    assert lst_len - K >= 0, f"K = {K} is greater than the length of the list = {lst_len}."
     
-    assert lst_len - K >= 0, "K is greater than the length of the list."
+    print("Success!")
+    heapq.heapify(lst_copy)
+    
+    for i in range(lst_len - K):
+        heapq.heappush(min_heap, heapq.heappop(lst_copy))
+
+    print(f"Top {K} elements of the input list: {lst_copy}")
+    return(lst_copy)
+
+@assert_types
+def find_Kth_smallest(lst, K):
+    lst_len = len(lst)
+    min_heap = []
+    th = ""
+    lst_copy = lst.copy()
+    assert lst_len - K >= 0, f"K = {K} is greater than the length of the list = {lst_len}."
+    
+    heapq.heapify(lst_copy)
     
     print("Success!")
     
-    for i in range(lst_len - K):
-        heapq.heappush(min_heap, heapq.heappop(lst))
-    print(lst)
-    return(lst)
+    for i in range(K - 1):
+        heapq.heappush(min_heap, heapq.heappop(lst_copy))
+        
+    heapq.heapify(lst_copy)
+    
+    Kth_smallest = lst_copy[0]
+    th = str(K)[-1]
+
+    if th == "1":
+        th = "st"
+    elif th == "2":
+        th = "nd"
+    elif th == "3":
+        th = "rd"
+    else:
+        th = "th"
+    
+
+    print(f"The {K}{th} smallest element is {Kth_smallest}")
+    
+    return(Kth_smallest)
+    
+    
 
 def main():
     lst = [5, 1, -2, 2, -3, 4, 4]
@@ -37,6 +75,12 @@ def main():
         find_top_K(lst, 2)
     except AssertionError as msg:
         print(msg)  
+        
+    try:
+        find_Kth_smallest(lst, 3)
+    except AssertionError as msg:
+        print(msg)
+        
     try:
         find_top_K(lst, 8)
     except AssertionError as msg:
@@ -46,6 +90,8 @@ def main():
         find_top_K(lst, 2)
     except AssertionError as msg:
         print(msg)
+        
+    
     
 
 if __name__ == "__main__":
