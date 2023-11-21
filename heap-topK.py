@@ -17,12 +17,14 @@ def assert_types(fun):
 
 @assert_types
 def find_top_K(lst, K):
-    print("Success!")
+    
     lst_len = len(lst)
     min_heap = []
     heapq.heapify(lst)
     
     assert lst_len - K >= 0, "K is greater than the length of the list."
+    
+    print("Success!")
     
     for i in range(lst_len - K):
         heapq.heappush(min_heap, heapq.heappop(lst))
