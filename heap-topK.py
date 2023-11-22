@@ -11,7 +11,7 @@ def assert_types(fun):
     def assert_wrap(*args):
         arguments = args[0]
         assert type(arguments) == list, "The first argument has to be a list."
-        assert all(list(map(lambda x: type(x) == float or type(x) == int, arguments))) == True, "The list has to contain numbers."
+        assert all(list(map(lambda x: type(x) == float or type(x) == int or type(x) == tuple, arguments))) == True, "The list has to contain numbers."
         return fun(*args)
     return assert_wrap
 
@@ -75,7 +75,7 @@ class Simple_Point:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.distance = Point.distance(self.x, self.y)
+        self.distance = Simple_Point.distance(self.x, self.y)
         
     def distance(x = 0, y = 0):
         dist = (x**2 + y**2)**(1/2)
@@ -86,7 +86,7 @@ class PointT(tuple, Simple_Point):
 
     def __new__(cls, x, y):
         point = Simple_Point(x, y)
-        dist = Point.distance(point.x, point.y)
+        dist = Simple_Point.distance(point.x, point.y)
         ret = tuple.__new__(tuple, (dist, point))
         return ret
 
@@ -102,19 +102,11 @@ class PointT(tuple, Simple_Point):
         
         return dist
        
-class Point:
     
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.distance = Point.distance(self.x, self.y)
-        
-    def distance(x = 0, y = 0):
-        dist = (x**2 + y**2)**(1/2)
-        return dist
-    
-def K_closest_to_origin(lst):
-    pass
+def K_closest_to_origin(lst, K):
+    points = list(map(PointT, lst))
+    Kth_closest = find_Kth_smallest(points, K)
+    return Kth_closest
     
     
 
@@ -124,6 +116,7 @@ def main():
     print(p)
     print(type(p))
     print()
+    
     lst = [5, 1, -2, 2, -3, 4, 4]
     try:
         find_top_K(lst, 2)
