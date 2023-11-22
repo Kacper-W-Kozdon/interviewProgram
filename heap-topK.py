@@ -67,9 +67,63 @@ def find_Kth_smallest(lst, K):
     
     return(Kth_smallest)
     
+# Need to look more into inheritance and multiple classes.
+# This stays as a reference point as to what I need to check.
+
+class Simple_Point:
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.distance = Point.distance(self.x, self.y)
+        
+    def distance(x = 0, y = 0):
+        dist = (x**2 + y**2)**(1/2)
+        return dist
+    
+
+class PointT(tuple, Simple_Point):
+
+    def __new__(cls, x, y):
+        point = Simple_Point(x, y)
+        dist = Point.distance(point.x, point.y)
+        ret = tuple.__new__(tuple, (dist, point))
+        return ret
+
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        
+    def __call__(self):
+        return self
+        
+
+    def distance(x = 0, y = 0):
+        dist = (x**2 + y**2)**(1/2)
+        
+        return dist
+       
+class Point:
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.distance = Point.distance(self.x, self.y)
+        
+    def distance(x = 0, y = 0):
+        dist = (x**2 + y**2)**(1/2)
+        return dist
+    
+def K_closest_to_origin(lst):
+    pass
+    
     
 
 def main():
+    
+    p = PointT(1, 2)
+    print(p)
+    print(type(p))
+    print()
     lst = [5, 1, -2, 2, -3, 4, 4]
     try:
         find_top_K(lst, 2)
