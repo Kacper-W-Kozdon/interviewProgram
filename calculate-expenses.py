@@ -52,7 +52,6 @@ class Expenses():
         aux_data = self.data
         first_week = lambda key_month, month_dict : {day : month_dict.get(day) for day in [key if int(key) <= 7 - datetime.strptime(key_month + "-" + "01", '%Y-%m-%d').date().weekday() else False for key in month_dict.keys()]}
         preprocessed_data = {key_month: first_week(key_month, aux_data.get(key_month)) for key_month in list(aux_data.keys()) }
-        print(preprocessed_data)
         for key in preprocessed_data.keys():
             if False in preprocessed_data[key].keys():
                 preprocessed_data[key].pop(False, None)
