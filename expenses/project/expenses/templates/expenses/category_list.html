@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<a href="{% url 'expenses:category-create' %}">add</a>
+
+<table border="1">
+	<thead>
+		<tr>
+			<th>name</th>
+			<th>quantity</th>
+			<th>actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for obj in object_list %}
+		<tr>
+			<td>
+				{{obj.name}}
+			</td>
+			<td>
+				{% for category, quantity in quantity_per_category.items %}
+					{% if category == obj.name and quantity != ' ' %}
+						{{quantity}}
+					{% endif %}
+				{% endfor %}
+			</td>
+			<td>
+				<a href="{% url 'expenses:category-delete' obj.id %}">delete</a>
+				<a href="{% url 'expenses:category-edit' obj.id %}">edit</a>
+			</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
