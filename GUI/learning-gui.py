@@ -1,4 +1,5 @@
 import time
+import math
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import *
@@ -14,7 +15,9 @@ class Window():
         self.canvas = None
         self.line = None
         self.step = 10
-        self.animate = False
+        self.angle = 0
+        self.move = False
+        self.spin = False
         # Creating the tkinter Window
         self.main_window()
         
@@ -66,40 +69,70 @@ class Window():
     def set_shape(self):
         if self._shape_exists is True:
             return None
+        
         move_it_button = Button(self.root, text="Move it", command=self.make_it_move)
         move_it_button.pack()
+
+        spin_it_button = Button(self.root, text="Spin it", command=self.make_it_spin)
+        spin_it_button.pack()
 
         stop_it_button = Button(self.root, text="Stop it", command=self.make_it_stop)
         stop_it_button.pack()
 
         self.canvas = Canvas(self.root, bg="black", height=200, width=200)
         
-        self.line = self.canvas.create_line(0,0,0,200, fill='white')
+        self.line = self.canvas.create_line(100,50,100,150, fill='white')
         self.canvas.pack()
         
         self._shape_exists = True
 
         del_shape_button = Button(self.root, text="Remove shape", 
-                                  command= lambda: (self.canvas.pack_forget(), del_shape_button.pack_forget(),
+                                  command= lambda: (self.__setattr__("move", False),
+                                  self.__setattr__("spin", False),
+                                  self.canvas.destroy(),
+                                  del_shape_button.pack_forget(),
+                                  spin_it_button.pack_forget(),
                                   move_it_button.pack_forget(), stop_it_button.pack_forget(), self.__setattr__("_shape_exists", False)))
         del_shape_button.pack()
 
     def update_line(self):
-        if self.animate is True:
-            self.step = 10 if (self.canvas.coords(self.line)[0] < 200 and self.step == 10) else -10
-            self.step = -10 if (self.canvas.coords(self.line)[0] > 0 and self.step == -10) else 10
 
-            self.canvas.move(self.line, self.step, 0)
+        if self.move is True:
+            x1, y1, x2, y2 = self.canvas.coords(self.line)
+            midx = (x1 + x2)/2
+            self.step = 10 if (midx < 200 and self.step == 10) else -10
+            self.step = -10 if (midx > 0 and self.step == -10) else 10
+            x1 += self.step
+            x2 += self.step
+            self.canvas.coords(self.line, x1, y1, x2, y2)
         
+        if self.spin is True:
+            self.angle += 1
+            self.angle = self.angle if self.angle < 60 else 0
+            x1, y1, x2, y2 = self.canvas.coords(self.line)
+            midx = (x1 + x2)/2
+            midy = (y1 + y2)/2
+            x1 = midx + 50 * math.sin(self.angle * math.pi/60)
+            x2 = midx - 50 * math.sin(self.angle * math.pi/60)
+            y1 = midy - 50 * math.cos(self.angle * math.pi/60)
+            y2 = midy + 50 * math.cos(self.angle * math.pi/60)
+            self.canvas.coords(self.line, x1, y1, x2, y2)
+
+        if any([self.spin, self.move]):
             self.root.after(50, self.update_line)
 
-
     def make_it_move(self):
-        self.animate = True
+        self.move = True
         self.root.after(50, self.update_line)
 
+    def make_it_spin(self):
+        self.spin = True
+        self.root.after(50, self.update_line)
+        
+
     def make_it_stop(self):
-        self.animate = False
+        self.move = False
+        self.spin = False
 
 
     def main_window(self):
