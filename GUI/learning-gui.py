@@ -122,12 +122,16 @@ class Window():
             self.root.after(50, self.update_line)
 
     def make_it_move(self):
+        if self.move == True:
+            return None
         self.move = True
-        self.root.after(50, self.update_line)
+        self.update_line()
 
     def make_it_spin(self):
+        if self.spin == True:
+            return None
         self.spin = True
-        self.root.after(50, self.update_line)
+        self.update_line()
         
 
     def make_it_stop(self):
