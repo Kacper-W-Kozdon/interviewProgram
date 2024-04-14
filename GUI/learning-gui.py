@@ -125,13 +125,15 @@ class Window():
         if self.move == True:
             return None
         self.move = True
-        self.update_line()
+        if self.spin is not True:
+            self.update_line()
 
     def make_it_spin(self):
         if self.spin == True:
             return None
         self.spin = True
-        self.update_line()
+        if self.move is not True:
+            self.update_line()
         
 
     def make_it_stop(self):
